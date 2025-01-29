@@ -13,7 +13,22 @@ jobs:
     steps:
       - name: checkout code
         uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}  
+
+      - name: Login to amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+
       - name: Build docker image
-        run: docker build -t spring-boot-image-app:latest .
+        run: docker build -t ${{ secrets.ECR_REPO }}:latest .
+
+      - name: Push Docker Image to AMAZON ECR
+        run: docker push ${{ secrets.ECR_REPO }}:latest
 
 
