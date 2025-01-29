@@ -1,0 +1,6 @@
+services:
+  app:
+    image: spring-boot-image-app
+    build: .
+    ports:
+      - "8085:8085"
